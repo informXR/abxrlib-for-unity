@@ -22,7 +22,7 @@ public static class Initialize
         ObjectAttacher.Attach<LogBatcher>("LogBatcher");
         ObjectAttacher.Attach<StorageBatcher>("StorageBatcher");
 #if UNITY_ANDROID
-        if (Configuration.instance.headsetTracking)
+        if (Configuration.Instance.headsetTracking)
         {
             ObjectAttacher.Attach<TrackInputDevices>("TrackInputDevices");
         }
