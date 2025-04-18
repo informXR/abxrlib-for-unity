@@ -23,7 +23,7 @@ public class Configuration : ScriptableObject
     [Tooltip("Optional")] public string orgID;
     [Tooltip("Optional")] public string authSecret;
     
-    public bool headsetTracking;
+    public bool headsetTracking = true;
     public int trackingUpdatesPerMinute = 4;
     
     public string restUrl = "https://lib-backend.xrdm.dev/";
