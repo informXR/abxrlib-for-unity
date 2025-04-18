@@ -308,7 +308,7 @@ The Integration Methods offer developers access to additional services, enabling
 public string Abxr.AIProxy(string prompt, string past_messages = "", string bot_id = "")
 
 // Example usage
-Abxr.AIProxy("Provide me a randomized greeting that includes common small talk and ends asking some form of how can I help");
+Abxr.AIProxy("Provide me a randomized greeting that includes common small talk and ends by asking some form of how can I help");
 ```
 
 **Parameters:**
@@ -341,8 +341,18 @@ public void Abxr.SetUserMeta(string metaString)
 ## Exit Polls
 Deliver questionnaires to users to gather feedback.
 ```cpp
-//C# Event Method Signatures
+// C# List Definition
+public enum PollType
+{
+    Thumbs,
+    Rating
+}
+
+// C# Event Method Signature
 public void PollUser(string prompt, ExitPollHandler.PollType pollType)
+
+// Example usage
+Abxr.PollUser("How would you rate this training experience?", PollType.Rating);
 ```
 **Poll Types:**
 - `Thumbs Up/Thumbs Down`
