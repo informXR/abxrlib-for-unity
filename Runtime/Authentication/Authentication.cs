@@ -13,7 +13,7 @@ using XRDM.SDK.External.Unity;
 public class Authentication : SdkBehaviour
 {
     private static string _orgId;
-    private static string _deviceId;
+    private static string _deviceId = SystemInfo.deviceUniqueIdentifier;
     private static string _authSecret;
     private static string _userId;
     private static string _appId;
@@ -44,17 +44,6 @@ public class Authentication : SdkBehaviour
         Connect(callBack);
 #endif
     }
-
-    private static void CheckArborInfo()
-    {
-        if (Callback.Service == null) return;
-
-        _partner = Partner.ArborXR;
-        _orgId = Callback.Service.GetOrgId();
-        _deviceId = Callback.Service.GetDeviceId();
-        _authSecret = Callback.Service.GetFingerprint();
-        _userId = Callback.Service.GetAccessToken();
-    }
     
     private sealed class Callback : IConnectionCallback
     {
@@ -67,15 +56,16 @@ public class Authentication : SdkBehaviour
     
     private void Start()
     {
+        GetConfigData();
 #if UNITY_ANDROID
-        CheckArborInfo();
+        GetArborData();
+#elif UNITY_WEBGL && !UNITY_EDITOR
+        GetQueryData();
 #endif
-        if (GetDataFromConfig())
-        {
-            SetSessionData();
-            StartCoroutine(Authenticate());
-        }
+        if (!ValidateConfigValues()) return;
 
+        SetSessionData();
+        StartCoroutine(Authenticate());
         StartCoroutine(CheckForReAuth());
     }
 
@@ -112,20 +102,48 @@ public class Authentication : SdkBehaviour
         }
     }
 
-    private static bool GetDataFromConfig()
+    private static void GetConfigData()
+    {
+        _appId = Configuration.Instance.appID;
+        _orgId = Configuration.Instance.orgID;
+        _authSecret = Configuration.Instance.authSecret;
+    }
+    
+    private static void GetArborData()
+    {
+        if (Callback.Service == null) return;
+
+        _partner = Partner.ArborXR;
+        _orgId = Callback.Service.GetOrgId();
+        _deviceId = Callback.Service.GetDeviceId();
+        _authSecret = Callback.Service.GetFingerprint();
+        _userId = Callback.Service.GetAccessToken();
+    }
+
+    private static void GetQueryData()
+    {
+        string orgIdQuery = Utils.GetQueryParam("abxr_orgid", Application.absoluteURL);
+        if (!string.IsNullOrEmpty(orgIdQuery))
+        {
+            _orgId = orgIdQuery;
+        }
+        
+        string authSecretQuery = Utils.GetQueryParam("abxr_auth_secret", Application.absoluteURL);
+        if (!string.IsNullOrEmpty(authSecretQuery))
+        {
+            _authSecret = authSecretQuery;
+        }
+    }
+
+    private static bool ValidateConfigValues()
     {
         const string appIdPattern = "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$";
-        if (string.IsNullOrEmpty(Configuration.Instance.appID) || !Regex.IsMatch(Configuration.Instance.appID, appIdPattern))
+        if (string.IsNullOrEmpty(_appId) || !Regex.IsMatch(_appId, appIdPattern))
         {
             Debug.LogError("AbxrLib - Invalid Application ID. Cannot authenticate.");
             return false;
         }
-
-        _appId = Configuration.Instance.appID;
-
-        if (_partner == Partner.ArborXR) return true; // the rest of the values are set by Arbor
         
-        _orgId = Configuration.Instance.orgID;
         if (string.IsNullOrEmpty(_orgId))
         {
             Debug.LogError("AbxrLib - Missing Organization ID. Cannot authenticate.");
@@ -138,15 +156,12 @@ public class Authentication : SdkBehaviour
             Debug.LogError("AbxrLib - Invalid Organization ID. Cannot authenticate.");
             return false;
         }
-
-        _authSecret = Configuration.Instance.authSecret;
+        
         if (string.IsNullOrEmpty(_authSecret))
         {
             Debug.LogError("AbxrLib - Missing Auth Secret. Cannot authenticate.");
             return false;
         }
-        
-        _deviceId = SystemInfo.deviceUniqueIdentifier;
 
         return true;
     }

@@ -126,5 +126,21 @@ public static class Utils
         return builder.ToString();
     }
     
+    public static string GetQueryParam(string key, string url)
+    {
+        var question = url.IndexOf('?');
+        if (question < 0) return "";
+        var query = url.Substring(question + 1);
+        foreach (var pair in query.Split('&'))
+        {
+            var kv = pair.Split('=');
+            if (kv.Length == 2 && Uri.UnescapeDataString(kv[0]) == key)
+            {
+                return Uri.UnescapeDataString(kv[1]);
+            }
+        }
+        return "";
+    }
+    
     public static long GetUnityTime() => (long)(Time.time * 1000f) + Initialize.StartTimeMs;
 }
