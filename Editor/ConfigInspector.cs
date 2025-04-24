@@ -10,9 +10,9 @@ public class ConfigInspector : Editor
         
         config.appID = EditorGUILayout.TextField(new GUIContent(
             "Application ID (required)", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), config.appID);
-        //config.orgID = EditorGUILayout.TextField(new GUIContent(
-        //    "Organization ID (optional)", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), config.orgID);
-        //config.authSecret = EditorGUILayout.TextField("Authorization Secret (optional)", config.authSecret);
+        config.orgID = EditorGUILayout.TextField(new GUIContent(
+            "Organization ID (optional)", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), config.orgID);
+        config.authSecret = EditorGUILayout.TextField("Authorization Secret (optional)", config.authSecret);
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Player Tracking", EditorStyles.boldLabel);
