@@ -57,7 +57,7 @@ Configure the SDK with settings available via the [ArborXR Dashboard](https://ap
 2. Input: **Application ID**
 
 The value is retrieved from the [ArborXR Dashboard](https://app.arborxr.com/):
-- Navigate to `Content Library > [Your APplication]` and you will find the value in the URL.
+- Navigate to `Content Library > [Your Application]` and you will find the value in the URL.
 - Example: https:\/\/app.arborxr.com\/abcd1234-abc1-2345-6789-abc1234d\/content\/`987654cba-54ba-dc43-98cb-dcba54321`
   - **Application ID** = `987654cba-54ba-dc43-98cb-dcba54321`
 
