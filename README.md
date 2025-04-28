@@ -53,10 +53,17 @@ ArborXR Insights enhances product value by offering:
 
 Configure the SDK with settings available via the [ArborXR Dashboard](https://app.arborxr.com/):
 
+(CLOSED BETA NOTE: Currently, you will need to go to the [ArborXR Insights Beta Portal](https://xrdi.xrdm.dev/) to access SDK settings. Simply go to the "Data Policies" tab, where you can check and modify "Configurations Settings" that will effect how the SDK operates. We advise not to change them unless you have a specific use case to explore.
+
+Also, if you want to use LMS integration in-headset sign-in, you MUST make sure that in **Data Policies** > **Configure Headset Login Policy**, that **"LMS Integration"** is selected. This will apply globally to all headsets using the SDK. In the future, you should be able to set it for certain Groups managed by ArborXR MDM.)
+
 1. In Unity, navigate to: `ArborXR Insights > Configuration`.
 2. Input: **Application ID**
 
 The value is retrieved from the [ArborXR Dashboard](https://app.arborxr.com/):
+
+(CLOSED BETA NOTE: You can retrieve the Application ID, as well as the Organization ID & Authentication Secret from the [ArborXR Insights Beta Portal](https://xrdi.xrdm.dev/) from any app shown in the View Data tab. You should only require the Application ID if you are distributing the app from ArborXR's Content Manager services, however, if you wish to sideload content or distrubute another way, you must include the Organization ID & Authentication Secret in the Unity Configurations to authenticate successfully.)
+
 - Navigate to `Content Library > [Your Application]` and you will find the value in the URL.
 - Example: https:\/\/app.arborxr.com\/abcd1234-abc1-2345-6789-abc1234d\/content\/`987654cba-54ba-dc43-98cb-dcba54321`
   - **Application ID** = `987654cba-54ba-dc43-98cb-dcba54321`
